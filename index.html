@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>功德箱 · 随缘打赏</title>
-    <!-- Font Awesome 6 图标库 -->
+    <title>wwwwwww功德箱</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* === 重置 & 全局锁定滚动 === */
         * {
             margin: 0;
             padding: 0;
@@ -25,7 +23,7 @@
             position: relative;
         }
 
-        /* 抽象背景元素 */
+        /* 抽象背景 */
         body::before {
             content: '';
             position: absolute;
@@ -49,7 +47,6 @@
             z-index: 0;
         }
 
-        /* 主容器 */
         .reward-box {
             width: 100%;
             max-width: 380px;
@@ -60,197 +57,206 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 2vh;
+            gap: 3vh;
             padding: 1vh 12px;
         }
 
-        /* 标题区（功德箱+木鱼） */
+        /* 标题区：两行文字 + 木鱼动画（整体居中） */
         .title {
-            text-align: center;
+            display: flex;
+            justify-content: center;   /* 水平居中 */
             animation: fadeIn 0.8s ease-out;
             flex-shrink: 0;
         }
-        .title h1 {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: clamp(1.8rem, 6vw, 2.2rem);
-            font-weight: 400;
-            color: #2c3e4e;
+        .title-bg {
             background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
-            padding: 6px 20px;
+            padding: 8px 24px;
             border-radius: 60px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.02);
             border: 1px solid rgba(255,255,255,0.8);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0 auto;            /* 保证居中 */
+        }
+        .title-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;        /* 文字居中对齐 */
             line-height: 1.2;
-            white-space: nowrap;
+        }
+        .title-text .line1 {
+            font-size: clamp(1.8rem, 5vw, 2.2rem);
+            font-weight: 500;
+            color: #2c3e4e;
+            letter-spacing: 2px;
+        }
+        .title-text .line2 {
+            font-size: clamp(1.8rem, 5vw, 2.2rem);
+            font-weight: 400;
+            color: #2c3e4e;
+            margin-top: -0.2rem;  /* 微调间距 */
         }
 
-        /* 木鱼动画 */
+        /* 木鱼动画容器 */
         .muyu-animation {
             display: inline-block;
-            width: 2.2rem;
-            height: 2.2rem;
+            width: 3.0rem;          /* 加宽以容纳水平锤子 */
+            height: 2.4rem;
             position: relative;
             vertical-align: middle;
             flex-shrink: 0;
         }
+
+        /* 木鱼主体 - 横向椭圆 */
         .muyu {
             position: absolute;
-            bottom: 0.2rem;
+            bottom: 0.5rem;
             left: 0.2rem;
-            width: 1.8rem;
-            height: 0.9rem;
-            background-color: #b7a48b;
-            border-radius: 50% / 40% 40% 60% 60%;
-            box-shadow: inset 0 -2px 4px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.1);
-            opacity: 0.9;
+            width: 2.0rem;
+            height: 1.1rem;
+            background-color: #c7b198;
+            border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%;
+            box-shadow: inset 0 -3px 5px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.1);
+            border: 1px solid #a18d78;
+            transform: rotate(2deg);
+            z-index: 1;
         }
+
+        /* 木鱼嘴 */
         .muyu::after {
             content: '';
             position: absolute;
-            top: 0.25rem;
-            left: 0.5rem;
-            width: 0.8rem;
+            top: 0.3rem;
+            left: 0.7rem;
+            width: 0.6rem;
             height: 0.2rem;
-            background: #5e4b3a;
+            background: #8b6f50;
             border-radius: 2px;
             opacity: 0.3;
         }
+
+        /* 锤子 - 水平放置，从右侧敲击，位置已微调使锤头正好落在木鱼中心 */
         .hammer {
             position: absolute;
-            bottom: 0.6rem;
-            left: 1.0rem;
-            width: 0.2rem;
-            height: 1.0rem;
-            background: #8b6f4c;
+            bottom: 2rem;          /* 调整垂直位置，使锤头中心与木鱼中心对齐 */
+            right: 0;                  /* 右端贴边，使锤头水平居中于木鱼 */
+            width: 1.4rem;             /* 锤柄长度 */
+            height: 0.25rem;           /* 锤柄粗细 */
+            background: #aa8c6a;
             border-radius: 4px;
-            transform-origin: bottom center;
-            animation: knock 0.5s infinite ease-in-out;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transform-origin: right center; /* 以右端为支点摆动 */
+            animation: knock-horizontal 0.5s infinite ease-in-out;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+            z-index: 2;
         }
+
+        /* 锤头（圆球） */
         .hammer::before {
             content: '';
             position: absolute;
-            top: -0.25rem;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0.5rem;
-            height: 0.5rem;
-            background: #a58357;
+            left: -0.4rem;            /* 锤头在左端 */
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0.7rem;
+            height: 0.7rem;
+            background: #be9e7c;
             border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
         }
-        @keyframes knock {
-            0%, 100% { transform: rotate(0deg) translateY(0); }
-            20% { transform: rotate(5deg) translateY(5px); }
-            40% { transform: rotate(-2deg) translateY(2px); }
-            60% { transform: rotate(1deg) translateY(0); }
+
+        /* 水平敲击动画：锤子向左摆动敲击木鱼 */
+        @keyframes knock-horizontal {
+            0% {
+                transform: rotate(0deg) translateX(0);
+            }
+            20% {
+                transform: rotate(-20deg) translateX(-2px); /* 向左敲，锤头接触木鱼 */
+            }
+            40% {
+                transform: rotate(5deg) translateX(1px);    /* 反弹 */
+            }
+            60% {
+                transform: rotate(-2deg) translateX(0);
+            }
+            100% {
+                transform: rotate(0deg) translateX(0);
+            }
         }
+
         @keyframes fadeIn {
             0% { opacity: 0; transform: translateY(10px); }
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* 卡片通用设计 */
+        /* 卡片样式（只放按钮） */
         .card {
             background: rgba(255, 255, 255, 0.75);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border-radius: 30px;
-            padding: 2vh 18px;
+            border-radius: 40px;
+            padding: 3vh 18px;
             box-shadow: 0 20px 30px -12px rgba(0,0,0,0.1);
             border: 1px solid rgba(255, 255, 255, 0.7);
             transition: all 0.3s ease;
             animation: fadeIn 0.9s ease-out forwards;
             opacity: 0;
             flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2vh;
         }
         .card.alipay { animation-delay: 0.1s; }
         .card.wechat { animation-delay: 0.2s; }
         .card:active { transform: scale(0.98); }
 
-        /* 平台头部 */
+        /* 平台头部（图标+文字） */
         .platform-header {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            margin-bottom: 1.5vh;
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             font-weight: 380;
             color: #334e68;
         }
         .alipay .platform-header i {
             color: #1e6f9f;
-            font-size: 2.0rem;
+            font-size: 2.2rem;
             opacity: 0.8;
         }
         .wechat .platform-header i {
             color: #2d6a4f;
-            font-size: 2.0rem;
+            font-size: 2.2rem;
             opacity: 0.8;
         }
 
-        /* 二维码图片容器 */
-        .qr-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 1vh 0 2vh;
-        }
-        .qr-img {
-            display: block;
+        /* 投币按钮 */
+        .coin-button {
             width: 100%;
-            max-width: 150px;
-            height: auto;
-            border-radius: 20px;
-            box-shadow: 0 12px 20px -10px rgba(0,0,0,0.1);
-            background: #ffffff;
-            border: 2px solid rgba(255,255,255,0.8);
-        }
-
-        /* 支付按钮样式 */
-        .pay-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            padding: 1.5vh 0;
-            border-radius: 40px;
-            font-size: 1rem;
-            font-weight: 450;
+            padding: 2vh 0;
+            border-radius: 60px;
+            font-size: 1.3rem;
+            font-weight: 500;
             color: white;
             border: none;
             cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 6px 12px -4px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 16px -6px rgba(0,0,0,0.2);
             font-family: inherit;
+            letter-spacing: 2px;
         }
-        .pay-button i { font-size: 1.1rem; }
-        .pay-button:active { transform: scale(0.96); }
-        .alipay .pay-button {
+        .coin-button i { margin-right: 8px; font-size: 1.3rem; }
+        .coin-button:active { transform: scale(0.96); }
+        .alipay .coin-button {
             background: linear-gradient(145deg, #1677ff, #0d5cba);
         }
-        .wechat .pay-button {
+        .wechat .coin-button {
             background: linear-gradient(145deg, #07c160, #059b4c);
         }
-
-        /* 微信备用提示 */
-        .fallback-hint {
-            text-align: center;
-            font-size: 0.7rem;
-            color: #8a9aa8;
-            margin-top: 1vh;
-            opacity: 0.8;
-        }
-
-        /* 隐藏原提示 */
-        .hint { display: none; }
 
         /* 页脚 */
         .footer-note {
@@ -286,142 +292,244 @@
             transition: transform 0.2s ease, opacity 0.15s;
             z-index: 999;
             pointer-events: none;
-            word-break: break-all;
         }
         .toast-message.show {
             transform: translateY(0);
             opacity: 1;
         }
-        .toast-message i { margin-right: 8px; color: #bfd8e5; }
 
-        /* 抽象装饰小点 */
-        .dot-decor {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: rgba(190, 170, 150, 0.1);
-            bottom: 10px;
-            right: 0;
-            z-index: 0;
+        /* 模态框（弹框） */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s;
+        }
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 40px;
+            padding: 24px 20px;
+            max-width: 280px;
+            width: 80%;
+            box-shadow: 0 30px 40px -20px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.7);
+            text-align: center;
+            transform: scale(0.9);
+            transition: transform 0.2s ease;
+        }
+        .modal-overlay.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-content h3 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: #2c3e4e;
+            margin-bottom: 16px;
+        }
+
+        .modal-qr {
+            width: 100%;
+            max-width: 160px;
+            height: auto;
+            border-radius: 20px;
+            margin: 0 auto 16px;
+            display: block;
+            box-shadow: 0 12px 20px -10px rgba(0,0,0,0.15);
+            border: 2px solid rgba(255,255,255,0.8);
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 14px 0;
+            border: none;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 450;
+            background: #1e6f9f;
+            color: white;
+            cursor: pointer;
+            transition: all 0.15s;
+            box-shadow: 0 6px 12px -4px rgba(0,0,0,0.2);
+            margin-top: 8px;
+        }
+        .modal-btn:active {
+            transform: scale(0.95);
+        }
+        .modal-btn.secondary {
+            background: #5f6b7a;
+        }
+        .close-note {
+            margin-top: 12px;
+            font-size: 0.75rem;
+            color: #6f8a9c;
+            opacity: 0.7;
         }
     </style>
 </head>
 <body>
-    <!-- 背景抽象装饰 -->
-    <div class="dot-decor" style="top: 3%; left: 0%; width: 180px; height: 180px; background: rgba(210, 180, 160, 0.1); border-radius: 63% 37% 48% 52% / 41% 45% 55% 59%;"></div>
-    <div class="dot-decor" style="bottom: 5%; right: -5%; width: 130px; height: 130px; background: rgba(160, 190, 200, 0.1); border-radius: 40% 60% 70% 30% / 40% 50% 50% 60%;"></div>
+    <!-- 背景装饰 -->
+    <div class="dot-decor" style="position:absolute; top:3%; left:0%; width:180px; height:180px; background:rgba(210,180,160,0.1); border-radius:63% 37% 48% 52%/41% 45% 55% 59%; z-index:0;"></div>
+    <div class="dot-decor" style="position:absolute; bottom:5%; right:-5%; width:130px; height:130px; background:rgba(160,190,200,0.1); border-radius:40% 60% 70% 30%/40% 50% 50% 60%; z-index:0;"></div>
 
     <div class="reward-box">
-        <!-- 标题：功德箱 + 木鱼动画 -->
+        <!-- 标题：两行文字 + 木鱼动画（锤子已调至中心） -->
         <div class="title">
-            <h1>
-                <span>功德箱</span>
+            <div class="title-bg">
+                <div class="title-text">
+                    <span class="line1">wwwwwww</span>
+                    <span class="line2">功德箱</span>
+                </div>
                 <div class="muyu-animation">
                     <div class="muyu"></div>
                     <div class="hammer"></div>
                 </div>
-            </h1>
+            </div>
         </div>
 
-        <!-- 支付宝卡片（点击直接跳转指定链接） -->
+        <!-- 支付宝卡片 -->
         <div class="card alipay">
             <div class="platform-header">
                 <i class="fab fa-alipay"></i>
                 <span>支付宝</span>
             </div>
-            <div class="qr-wrapper">
-                <!-- 二维码可保留或替换，但跳转以按钮为准 -->
-                <img class="qr-img" 
-                     src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23f0f2f5%22%20rx%3D%2224%22%2F%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%2212%22%20fill%3D%22%231e6f9f%22%20opacity%3D%220.4%22%2F%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%22120%22%20r%3D%2218%22%20fill%3D%22%231e6f9f%22%20opacity%3D%220.3%22%2F%3E%3Ccircle%20cx%3D%2280%22%20cy%3D%22150%22%20r%3D%2210%22%20fill%3D%22%231e6f9f%22%20opacity%3D%220.5%22%2F%3E%3Cpath%20stroke%3D%22%231e6f9f%22%20stroke-width%3D%222%22%20opacity%3D%220.3%22%20d%3D%22M40%2040L160%20160%22%20stroke-dasharray%3D%226%206%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-size%3D%2214%22%20text-anchor%3D%22middle%22%20dy%3D%22.3em%22%20fill%3D%22%23344e6c%22%20font-family%3D%22Inter%2C%20sans-serif%22%3E%E6%94%B6%E6%AC%BE%E7%A0%81%3C%2Ftext%3E%3C%2Fsvg%3E'
-                     alt="支付宝收款码">
-            </div>
-            <button class="pay-button" id="alipay-pay">
-                <i class="fab fa-alipay"></i> 支付宝支付
+            <button class="coin-button" id="show-alipay-modal">
+                <i class="fas fa-coins"></i> 支付宝-投币
             </button>
         </div>
 
-        <!-- 微信卡片（点击按钮直接跳转到自定义链接） -->
+        <!-- 微信卡片 -->
         <div class="card wechat">
             <div class="platform-header">
                 <i class="fab fa-weixin"></i>
                 <span>微信</span>
             </div>
-            <div class="qr-wrapper">
-                <!-- 请替换为您自己的微信收款码图片 -->
-                <img class="qr-img" 
-                    src="vx_reward.jpg"
-                     <!-- src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23f0f2f5%22%20rx%3D%2224%22%2F%3E%3Ccircle%20cx%3D%2245%22%20cy%3D%2280%22%20r%3D%2214%22%20fill%3D%22%232d6a4f%22%20opacity%3D%220.35%22%2F%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%2250%22%20r%3D%2220%22%20fill%3D%22%232d6a4f%22%20opacity%3D%220.25%22%2F%3E%3Ccircle%20cx%3D%22110%22%20cy%3D%22150%22%20r%3D%2215%22%20fill%3D%22%232d6a4f%22%20opacity%3D%220.3%22%2F%3E%3Cpath%20stroke%3D%22%232d6a4f%22%20stroke-width%3D%222%22%20opacity%3D%220.3%22%20d%3D%22M160%2040L50%20160%22%20stroke-dasharray%3D%228%204%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-size%3D%2214%22%20text-anchor%3D%22middle%22%20dy%3D%22.3em%22%20fill%3D%22%23344e6c%22%20font-family%3D%22Inter%2C%20sans-serif%22%3E%E6%94%B6%E6%AC%BE%E7%A0%81%3C%2Ftext%3E%3C%2Fsvg%3E' -->
-                     <!-- alt="微信收款码"> -->
-            </div>
-            <!-- 按钮点击直接跳转到自定义链接 -->
-            <button class="pay-button" id="wechat-pay">
-                <i class="fab fa-weixin"></i> 微信支付
+            <button class="coin-button" id="show-wechat-modal">
+                <i class="fas fa-coins"></i> 微信-投币
             </button>
-            <div class="fallback-hint">
-                <i class="fa-regular fa-circle-info"></i> 点击按钮直接跳转
-            </div>
         </div>
 
         <!-- 页脚 -->
         <div class="footer-note">
-            <span>· 随缘打赏 ·</span>
+            <span>· 好人一生平安 ·</span>
         </div>
     </div>
 
-    <!-- Toast 提示层 -->
-    <div class="toast-message" id="toast">
-        <i class="fa-regular fa-heart"></i> 功德无量
+    <!-- Toast 提示 -->
+    <div class="toast-message" id="toast"><i class="fa-regular fa-heart"></i> 功德无量</div>
+
+    <!-- 支付宝弹框 -->
+    <div class="modal-overlay" id="alipay-modal">
+        <div class="modal-content">
+            <h3>支付宝收款码</h3>
+            <!-- 请替换为您的支付宝收款码图片 -->
+            <img class="modal-qr" src='zfb_reward.jgp>
+            <img class="modal-qr" src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23f0f2f5%22%20rx%3D%2224%22%2F%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%2212%22%20fill%3D%22%231e6f9f%22%20opacity%3D%220.4%22%2F%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%22120%22%20r%3D%2218%22%20fill%3D%22%231e6f9f%22%20opacity%3D%220.3%22%2F%3E%3Ccircle%20cx%3D%2280%22%20cy%3D%22150%22%20r%3D%2210%22%20fill%3D%22%231e6f9f%22%20opacity%3D%220.5%22%2F%3E%3Cpath%20stroke%3D%22%231e6f9f%22%20stroke-width%3D%222%22%20opacity%3D%220.3%22%20d%3D%22M40%2040L160%20160%22%20stroke-dasharray%3D%226%206%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-size%3D%2214%22%20text-anchor%3D%22middle%22%20dy%3D%22.3em%22%20fill%3D%22%23344e6c%22%20font-family%3D%22Inter%2C%20sans-serif%22%3E%E6%94%B6%E6%AC%BE%E7%A0%81%3C%2Ftext%3E%3C%2Fsvg%3E' alt="支付宝收款码">
+            <button class="modal-btn" id="alipay-jump">点击跳转支付宝</button>
+            <div class="close-note">点击空白处关闭</div>
+        </div>
+    </div>
+
+    <!-- 微信弹框 -->
+    <div class="modal-overlay" id="wechat-modal">
+        <div class="modal-content">
+            <h3>微信收款码</h3>
+            <!-- 请替换为您的微信收款码图片 -->
+               <img class="modal-qr" src='vx_reward.jgp>
+            <!-- <img class="modal-qr" src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23f0f2f5%22%20rx%3D%2224%22%2F%3E%3Ccircle%20cx%3D%2245%22%20cy%3D%2280%22%20r%3D%2214%22%20fill%3D%22%232d6a4f%22%20opacity%3D%220.35%22%2F%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%2250%22%20r%3D%2220%22%20fill%3D%22%232d6a4f%22%20opacity%3D%220.25%22%2F%3E%3Ccircle%20cx%3D%22110%22%20cy%3D%22150%22%20r%3D%2215%22%20fill%3D%22%232d6a4f%22%20opacity%3D%220.3%22%2F%3E%3Cpath%20stroke%3D%22%232d6a4f%22%20stroke-width%3D%222%22%20opacity%3D%220.3%22%20d%3D%22M160%2040L50%20160%22%20stroke-dasharray%3D%228%204%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-size%3D%2214%22%20text-anchor%3D%22middle%22%20dy%3D%22.3em%22%20fill%3D%22%23344e6c%22%20font-family%3D%22Inter%2C%20sans-serif%22%3E%E6%94%B6%E6%AC%BE%E7%A0%81%3C%2Ftext%3E%3C%2Fsvg%3E' alt="微信收款码"> -->
+            <button class="modal-btn secondary" id="wechat-save">请长按/截图保存</button>
+            <div class="close-note">点击空白处关闭</div>
+        </div>
     </div>
 
     <script>
         (function() {
-            // Toast 控制
             const toast = document.getElementById('toast');
             let timer = null;
 
-            function showToast(message, icon = 'fa-regular fa-heart') {
+            function showToast(msg, icon = 'fa-regular fa-heart') {
                 if (timer) clearTimeout(timer);
-                toast.innerHTML = `<i class="${icon}"></i> ${message}`;
+                toast.innerHTML = `<i class="${icon}"></i> ${msg}`;
                 toast.classList.add('show');
-                timer = setTimeout(() => {
-                    toast.classList.remove('show');
-                }, 2000);
+                timer = setTimeout(() => toast.classList.remove('show'), 2000);
             }
 
-            // ---------- 支付宝按钮：跳转指定链接 ----------
-            document.getElementById('alipay-pay').addEventListener('click', function(e) {
+            // 获取弹框元素
+            const alipayModal = document.getElementById('alipay-modal');
+            const wechatModal = document.getElementById('wechat-modal');
+            const showAlipayBtn = document.getElementById('show-alipay-modal');
+            const showWechatBtn = document.getElementById('show-wechat-modal');
+            const alipayJumpBtn = document.getElementById('alipay-jump');
+            const wechatSaveBtn = document.getElementById('wechat-save');
+
+            // 显示支付宝弹框
+            showAlipayBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                alipayModal.classList.add('show');
+            });
+
+            // 显示微信弹框
+            showWechatBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                wechatModal.classList.add('show');
+            });
+
+            // 支付宝跳转按钮
+            alipayJumpBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 window.location.href = 'https://qr.alipay.com/fkx18119t9luda2vhym1ue6';
-                // 可选提示
-                // showToast('正在跳转支付宝...', 'fa-brands fa-alipay');
+                alipayModal.classList.remove('show');
+                showToast('正在跳转支付宝...', 'fa-brands fa-alipay');
             });
 
-            // ---------- 微信按钮：直接跳转到用户提供的自定义链接 ----------
-            const wechatPayBtn = document.getElementById('wechat-pay');
-            const customUrl = '#付款:wwwwwwww(wzw1593570)/功德箱收款/001';  // 用户指定的链接
-            onst encodedUrl = customUrl.replace(/([^\x00-\x7F]+)/g, encodeURIComponent);
-
-            wechatPayBtn.addEventListener('click', function(e) {
+            // 微信保存按钮（仅提示）
+            wechatSaveBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                window.location.href = encodedUrl;
-                showToast('正在打开...', 'fa-brands fa-weixin');
+                showToast('请长按或截图保存收款码', 'fa-brands fa-weixin');
+                // 不关闭弹框
             });
 
-            // ---------- 卡片空白区域点击（功德+1）----------
+            // 点击遮罩关闭弹框
+            [alipayModal, wechatModal].forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.classList.remove('show');
+                    }
+                });
+            });
+
+            // 卡片空白区域反馈
             const cards = document.querySelectorAll('.card');
             cards.forEach(card => {
-                card.addEventListener('click', function(e) {
-                    if (e.target.closest('.pay-button')) return;
-                    this.style.transition = 'transform 0.15s';
-                    setTimeout(() => { this.style.transition = ''; }, 150);
-                    let platform = this.classList.contains('alipay') ? '支付宝' : '微信';
+                card.addEventListener('click', (e) => {
+                    if (e.target.closest('.coin-button')) return;
+                    card.style.transition = 'transform 0.15s';
+                    setTimeout(() => card.style.transition = '', 150);
+                    const platform = card.classList.contains('alipay') ? '支付宝' : '微信';
                     showToast(`${platform}·功德+1`, 'fa-regular fa-star');
                 });
             });
         })();
     </script>
 
-    <!-- 说明：支付宝二维码可保留，但跳转已使用指定链接；微信按钮直接跳转自定义链接，请确保该链接在微信中可识别 -->
+    <!-- 说明：请将两个弹框中的收款码图片 src 替换为您自己的收款码图片（建议正方形300x300以上） -->
 </body>
 </html>
