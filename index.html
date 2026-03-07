@@ -57,14 +57,14 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 3vh;
+            gap: 2.5vh;
             padding: 1vh 12px;
         }
 
         /* 标题区：两行文字 + 木鱼动画（整体居中） */
         .title {
             display: flex;
-            justify-content: center;   /* 水平居中 */
+            justify-content: center;
             animation: fadeIn 0.8s ease-out;
             flex-shrink: 0;
         }
@@ -79,12 +79,12 @@
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            margin: 0 auto;            /* 保证居中 */
+            margin: 0 auto;
         }
         .title-text {
             display: flex;
             flex-direction: column;
-            align-items: center;        /* 文字居中对齐 */
+            align-items: center;
             line-height: 1.2;
         }
         .title-text .line1 {
@@ -97,40 +97,40 @@
             font-size: clamp(1.8rem, 5vw, 2.2rem);
             font-weight: 400;
             color: #2c3e4e;
-            margin-top: -0.2rem;  /* 微调间距 */
+            margin-top: -0.2rem;
         }
 
         /* 木鱼动画容器 */
         .muyu-animation {
             display: inline-block;
-            width: 3.0rem;          /* 加宽以容纳水平锤子 */
-            height: 2.4rem;
+            width: 3.2rem;
+            height: 2.6rem;
             position: relative;
             vertical-align: middle;
             flex-shrink: 0;
         }
 
-        /* 木鱼主体 - 横向椭圆 */
+        /* 木鱼主体 - 横向椭圆，圆润 */
         .muyu {
             position: absolute;
-            bottom: 0.5rem;
-            left: 0.2rem;
-            width: 2.0rem;
-            height: 1.1rem;
-            background-color: #c7b198;
-            border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%;
-            box-shadow: inset 0 -3px 5px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.1);
+            bottom: 0.6rem;
+            left: 0.3rem;
+            width: 2.2rem;
+            height: 1.2rem;
+            background: #c7b198;
+            border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+            box-shadow: inset 0 -3px 5px rgba(0,0,0,0.15), 0 4px 6px rgba(0,0,0,0.1);
             border: 1px solid #a18d78;
-            transform: rotate(2deg);
+            transform: rotate(1deg);
             z-index: 1;
         }
 
-        /* 木鱼嘴 */
+        /* 木鱼嘴（装饰） */
         .muyu::after {
             content: '';
             position: absolute;
-            top: 0.3rem;
-            left: 0.7rem;
+            top: 0.35rem;
+            left: 0.8rem;
             width: 0.6rem;
             height: 0.2rem;
             background: #8b6f50;
@@ -138,48 +138,52 @@
             opacity: 0.3;
         }
 
-        /* 锤子 - 水平放置，从右侧敲击，位置已微调使锤头正好落在木鱼中心 */
+        /* 锤子 - 水平放置，精确对位 */
         .hammer {
             position: absolute;
-            bottom: 2rem;          /* 调整垂直位置，使锤头中心与木鱼中心对齐 */
-            right: 0;                  /* 右端贴边，使锤头水平居中于木鱼 */
-            width: 1.4rem;             /* 锤柄长度 */
-            height: 0.25rem;           /* 锤柄粗细 */
+            bottom: 2rem;         /* 精确调整垂直位置，使锤头中心与木鱼中心对齐 */
+            right: 0.2rem;            /* 右端留一点空隙，看起来更自然 */
+            width: 1.6rem;            /* 锤柄稍长，使锤头能覆盖木鱼中心 */
+            height: 0.3rem;           /* 锤柄粗细 */
             background: #aa8c6a;
             border-radius: 4px;
-            transform-origin: right center; /* 以右端为支点摆动 */
-            animation: knock-horizontal 0.5s infinite ease-in-out;
+            transform-origin: right center; /* 以右端为支点 */
+            animation: knock-precise 0.55s infinite ease-in-out;
             box-shadow: 0 3px 6px rgba(0,0,0,0.2);
             z-index: 2;
         }
 
-        /* 锤头（圆球） */
+        /* 锤头（圆球）- 更大更明显 */
         .hammer::before {
             content: '';
             position: absolute;
-            left: -0.4rem;            /* 锤头在左端 */
+            left: -0.5rem;            /* 锤头向左伸出，正好在木鱼中心上方 */
             top: 50%;
             transform: translateY(-50%);
-            width: 0.7rem;
-            height: 0.7rem;
+            width: 0.9rem;
+            height: 0.9rem;
             background: #be9e7c;
             border-radius: 50%;
             box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+            border: 1px solid #9f8263;
         }
 
-        /* 水平敲击动画：锤子向左摆动敲击木鱼 */
-        @keyframes knock-horizontal {
+        /* 精准敲击动画：锤头正好落在木鱼中心 */
+        @keyframes knock-precise {
             0% {
                 transform: rotate(0deg) translateX(0);
             }
-            20% {
-                transform: rotate(-20deg) translateX(-2px); /* 向左敲，锤头接触木鱼 */
+            18% {
+                transform: rotate(-22deg) translateX(-3px); /* 敲下，锤头中心接触木鱼中心 */
             }
-            40% {
+            32% {
                 transform: rotate(5deg) translateX(1px);    /* 反弹 */
             }
-            60% {
-                transform: rotate(-2deg) translateX(0);
+            50% {
+                transform: rotate(-2deg) translateX(0);     /* 微调回正 */
+            }
+            70% {
+                transform: rotate(0deg) translateX(0);      /* 归位 */
             }
             100% {
                 transform: rotate(0deg) translateX(0);
@@ -191,13 +195,13 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* 卡片样式（只放按钮） */
+        /* 卡片通用样式（所有卡片） */
         .card {
             background: rgba(255, 255, 255, 0.75);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-radius: 40px;
-            padding: 3vh 18px;
+            padding: 2.5vh 18px;
             box-shadow: 0 20px 30px -12px rgba(0,0,0,0.1);
             border: 1px solid rgba(255, 255, 255, 0.7);
             transition: all 0.3s ease;
@@ -207,11 +211,17 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2vh;
+            gap: 1.5vh;
         }
         .card.alipay { animation-delay: 0.1s; }
         .card.wechat { animation-delay: 0.2s; }
+        .card.other { 
+            animation-delay: 0.3s; 
+            background: rgba(200, 200, 200, 0.6); /* 更淡的灰色表示开发中 */
+            border: 1px dashed rgba(100,100,100,0.3);
+        }
         .card:active { transform: scale(0.98); }
+        .card.other:active { transform: scale(1); } /* 开发中不缩放 */
 
         /* 平台头部（图标+文字） */
         .platform-header {
@@ -233,11 +243,20 @@
             font-size: 2.2rem;
             opacity: 0.8;
         }
+        .other .platform-header i {
+            color: #7f8c8d;
+            font-size: 2.2rem;
+            opacity: 0.5;
+        }
+        .other .platform-header span {
+            color: #7f8c8d;
+            opacity: 0.8;
+        }
 
-        /* 投币按钮 */
+        /* 投币按钮 (支付宝/微信专用) */
         .coin-button {
             width: 100%;
-            padding: 2vh 0;
+            padding: 1.8vh 0;
             border-radius: 60px;
             font-size: 1.3rem;
             font-weight: 500;
@@ -258,6 +277,16 @@
             background: linear-gradient(145deg, #07c160, #059b4c);
         }
 
+        /* 其他方式卡片的内容（开发中） */
+        .other-content {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            padding: 1vh 0;
+            font-style: italic;
+            opacity: 0.8;
+            letter-spacing: 1px;
+        }
+
         /* 页脚 */
         .footer-note {
             text-align: center;
@@ -270,7 +299,7 @@
             flex-shrink: 0;
         }
 
-        /* Toast 提示 */
+        /* Toast 提示 - 确保在最上层 (z-index > 弹框的1000) */
         .toast-message {
             position: fixed;
             bottom: 20px;
@@ -391,7 +420,7 @@
     <div class="dot-decor" style="position:absolute; bottom:5%; right:-5%; width:130px; height:130px; background:rgba(160,190,200,0.1); border-radius:40% 60% 70% 30%/40% 50% 50% 60%; z-index:0;"></div>
 
     <div class="reward-box">
-        <!-- 标题：两行文字 + 木鱼动画（锤子已调至中心） -->
+        <!-- 标题：两行文字 + 木鱼动画（锤子精准敲中心） -->
         <div class="title">
             <div class="title-bg">
                 <div class="title-text">
@@ -412,7 +441,7 @@
                 <span>支付宝</span>
             </div>
             <button class="coin-button" id="show-alipay-modal">
-                <i class="fas fa-coins"></i> 点击-投币
+                <i class="fas fa-coins"></i> 支付宝-投币
             </button>
         </div>
 
@@ -423,13 +452,22 @@
                 <span>微信</span>
             </div>
             <button class="coin-button" id="show-wechat-modal">
-                <i class="fas fa-coins"></i> 点击-投币
+                <i class="fas fa-coins"></i> 微信-投币
             </button>
+        </div>
+
+        <!-- 其他方式卡片（新增，开发中） -->
+        <div class="card other">
+            <div class="platform-header">
+                <i class="fas fa-gem"></i>
+                <span>其他方式</span>
+            </div>
+            <div class="other-content">· 开发中 ·</div>
         </div>
 
         <!-- 页脚 -->
         <div class="footer-note">
-            <span>· 好人一生平安 ·</span>
+            <span>·好人一生平安 </span>
         </div>
     </div>
 
@@ -441,7 +479,7 @@
         <div class="modal-content">
             <h3>支付宝收款码</h3>
             <!-- 请替换为您的支付宝收款码图片 -->
-            <img class="modal-qr" src='zfb_reward.jpg'>
+             <img class="modal-qr" src='zfb_reward.jpg'>
             <!-- <img class="modal-qr" src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23f0f2f5%22%20rx%3D%2224%22%2F%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%2212%22%20fill%3D%22%231e6f9f%22%20opacity%3D%220.4%22%2F%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%22120%22%20r%3D%2218%22%20fill%3D%22%231e6f9f%22%20opacity%3D%220.3%22%2F%3E%3Ccircle%20cx%3D%2280%22%20cy%3D%22150%22%20r%3D%2210%22%20fill%3D%22%231e6f9f%22%20opacity%3D%220.5%22%2F%3E%3Cpath%20stroke%3D%22%231e6f9f%22%20stroke-width%3D%222%22%20opacity%3D%220.3%22%20d%3D%22M40%2040L160%20160%22%20stroke-dasharray%3D%226%206%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-size%3D%2214%22%20text-anchor%3D%22middle%22%20dy%3D%22.3em%22%20fill%3D%22%23344e6c%22%20font-family%3D%22Inter%2C%20sans-serif%22%3E%E6%94%B6%E6%AC%BE%E7%A0%81%3C%2Ftext%3E%3C%2Fsvg%3E' alt="支付宝收款码"> -->
             <button class="modal-btn" id="alipay-jump">点击跳转支付宝</button>
             <div class="close-note">点击空白处关闭</div>
@@ -453,7 +491,7 @@
         <div class="modal-content">
             <h3>微信收款码</h3>
             <!-- 请替换为您的微信收款码图片 -->
-               <img class="modal-qr" src='vx_reward.jpg'>
+             <img class="modal-qr" src='vx_reward.jpg'>
             <!-- <img class="modal-qr" src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23f0f2f5%22%20rx%3D%2224%22%2F%3E%3Ccircle%20cx%3D%2245%22%20cy%3D%2280%22%20r%3D%2214%22%20fill%3D%22%232d6a4f%22%20opacity%3D%220.35%22%2F%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%2250%22%20r%3D%2220%22%20fill%3D%22%232d6a4f%22%20opacity%3D%220.25%22%2F%3E%3Ccircle%20cx%3D%22110%22%20cy%3D%22150%22%20r%3D%2215%22%20fill%3D%22%232d6a4f%22%20opacity%3D%220.3%22%2F%3E%3Cpath%20stroke%3D%22%232d6a4f%22%20stroke-width%3D%222%22%20opacity%3D%220.3%22%20d%3D%22M160%2040L50%20160%22%20stroke-dasharray%3D%228%204%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-size%3D%2214%22%20text-anchor%3D%22middle%22%20dy%3D%22.3em%22%20fill%3D%22%23344e6c%22%20font-family%3D%22Inter%2C%20sans-serif%22%3E%E6%94%B6%E6%AC%BE%E7%A0%81%3C%2Ftext%3E%3C%2Fsvg%3E' alt="微信收款码"> -->
             <button class="modal-btn secondary" id="wechat-save">请长按/截图保存</button>
             <div class="close-note">点击空白处关闭</div>
@@ -516,8 +554,8 @@
                 });
             });
 
-            // 卡片空白区域反馈
-            const cards = document.querySelectorAll('.card');
+            // 卡片空白区域反馈（排除其他卡片）
+            const cards = document.querySelectorAll('.card.alipay, .card.wechat');
             cards.forEach(card => {
                 card.addEventListener('click', (e) => {
                     if (e.target.closest('.coin-button')) return;
@@ -526,6 +564,13 @@
                     const platform = card.classList.contains('alipay') ? '支付宝' : '微信';
                     showToast(`${platform}·功德+1`, 'fa-regular fa-star');
                 });
+            });
+
+            // 其他卡片点击提示开发中
+            document.querySelector('.card.other')?.addEventListener('click', (e) => {
+                if (e.target.closest('.platform-header') || e.target.closest('.other-content')) {
+                    showToast('其他方式开发中，敬请期待', 'fa-regular fa-clock');
+                }
             });
         })();
     </script>
