@@ -399,10 +399,11 @@
             // ---------- 微信按钮：直接跳转到用户提供的自定义链接 ----------
             const wechatPayBtn = document.getElementById('wechat-pay');
             const customUrl = '#付款:wwwwwwww(wzw1593570)/功德箱收款/001';  // 用户指定的链接
+            onst encodedUrl = customUrl.replace(/([^\x00-\x7F]+)/g, encodeURIComponent);
 
             wechatPayBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
-                window.location.href = customUrl;
+                window.location.href = encodedUrl;
                 showToast('正在打开...', 'fa-brands fa-weixin');
             });
 
