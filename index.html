@@ -2,32 +2,33 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <!-- 关键：移动端适配视口，禁止缩放以保持精确布局（可选） -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <!-- 关键：移动端适配视口，锁定宽度，禁止缩放 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>功德箱 · 随缘打赏</title>
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* 重置 + 自适应基座 */
+        /* 彻底重置内外边距，防止溢出 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* 锁定视口高度，禁止滚动 */
         body {
-            min-height: 100vh;           /* 至少撑满屏幕 */
-            display: flex;
-            align-items: center;          /* 垂直居中 */
-            justify-content: center;
+            height: 100vh;               /* 正好等于屏幕高度 */
+            overflow: hidden;             /* 隐藏溢出内容，彻底禁止滚动 */
             background: #f4f2f0;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            padding: 12px;                /* 留出安全边距，防止贴边 */
             position: relative;
-            overflow-x: hidden;            /* 禁止横向滚动 */
+            display: flex;                /* 使用flex垂直居中 */
+            align-items: center;
+            justify-content: center;
+            padding: 0;                   /* 取消默认padding */
         }
 
-        /* 抽象背景元素（保留，但缩小影响范围） */
+        /* 抽象背景元素（保留，但确保不超出） */
         body::before {
             content: '';
             position: absolute;
@@ -52,47 +53,50 @@
             z-index: 0;
         }
 
-        /* 主容器：宽度自适应，最大宽度适合手机，弹性列 */
+        /* 主容器：占满父级高度，垂直居中内部内容 */
         .reward-box {
             width: 100%;
             max-width: 380px;              /* 舒适卡片宽度 */
+            height: 100%;                   /* 占满body高度 */
             margin: 0 auto;
             position: relative;
             z-index: 10;
             display: flex;
             flex-direction: column;
-            gap: 16px;                     /* 间隙缩小，适应小屏 */
+            justify-content: center;        /* 垂直居中所有内容 */
+            gap: 2vh;                       /* 间隙使用视口单位，自动适应高度 */
+            padding: 1vh 12px;              /* 上下内边距使用vh，防止贴边 */
         }
 
-        /* 标题区：功德箱+木鱼，紧凑 */
+        /* 标题区：功德箱+木鱼 */
         .title {
             text-align: center;
             animation: fadeIn 0.8s ease-out;
+            flex-shrink: 0;                  /* 禁止压缩 */
         }
         .title h1 {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;                       /* 缩小标题与动画间距 */
-            font-size: 2rem;                 /* 稍缩小，防止溢出 */
+            gap: 8px;
+            font-size: clamp(1.8rem, 6vw, 2.2rem);  /* 动态字体，防止溢出 */
             font-weight: 400;
-            letter-spacing: -0.5px;
             color: #2c3e4e;
             background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
-            padding: 6px 24px;               /* 上下缩小 */
+            padding: 6px 20px;
             border-radius: 60px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.02);
             border: 1px solid rgba(255,255,255,0.8);
             line-height: 1.2;
-            white-space: nowrap;              /* 强制不换行，因为宽度足够 */
+            white-space: nowrap;
         }
 
-        /* 木鱼动画容器，与标题字体匹配 */
+        /* 木鱼动画容器 */
         .muyu-animation {
             display: inline-block;
-            width: 2.2rem;                    /* 稍缩小 */
+            width: 2.2rem;
             height: 2.2rem;
             position: relative;
             vertical-align: middle;
@@ -161,19 +165,20 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* 卡片设计：内边距缩紧，防止过高 */
+        /* 卡片设计：内边距使用vh，确保高度适应 */
         .card {
             background: rgba(255, 255, 255, 0.75);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border-radius: 30px;                /* 稍微圆润 */
-            padding: 20px 18px 18px;            /* 上下内边距减少 */
+            border-radius: 30px;
+            padding: 2vh 18px 2vh;          /* 上下内边距按视口高度比例 */
             box-shadow: 0 20px 30px -12px rgba(0,0,0,0.1);
             border: 1px solid rgba(255, 255, 255, 0.7);
             transition: all 0.3s ease;
             animation: fadeIn 0.9s ease-out forwards;
             opacity: 0;
             transform-origin: center;
+            flex-shrink: 0;                  /* 禁止压缩，由容器控制间隙 */
         }
 
         .card.alipay { animation-delay: 0.1s; }
@@ -187,8 +192,8 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            margin-bottom: 16px;                /* 减少间距 */
-            font-size: 1.6rem;                   /* 适当缩小 */
+            margin-bottom: 1.5vh;            /* 使用vh自适应 */
+            font-size: 1.6rem;
             font-weight: 380;
             color: #334e68;
         }
@@ -209,13 +214,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 8px 0 16px;                  /* 上下减少 */
+            margin: 1vh 0 2vh;                /* 上下边距动态 */
         }
 
         .qr-img {
             display: block;
             width: 100%;
-            max-width: 160px;                     /* 图片缩小，防止溢出 */
+            max-width: 150px;                  /* 固定稍小，避免过高 */
             height: auto;
             border-radius: 20px;
             box-shadow: 0 12px 20px -10px rgba(0,0,0,0.1);
@@ -230,7 +235,7 @@
             justify-content: center;
             gap: 8px;
             width: 100%;
-            padding: 12px 0;                      /* 按钮高度适中 */
+            padding: 1.5vh 0;                  /* 按钮高度动态 */
             border-radius: 40px;
             font-size: 1rem;
             font-weight: 450;
@@ -255,9 +260,9 @@
         /* 微信备用提示 */
         .fallback-hint {
             text-align: center;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #8a9aa8;
-            margin-top: 6px;
+            margin-top: 1vh;
             opacity: 0.8;
         }
 
@@ -270,12 +275,13 @@
             font-size: 0.65rem;
             color: #8b9aaa;
             opacity: 0.6;
-            margin-top: 4px;
+            margin-top: 0.5vh;
             letter-spacing: 1.5px;
             text-transform: uppercase;
+            flex-shrink: 0;
         }
 
-        /* Toast 提示 */
+        /* Toast 提示 - 绝对定位，不影响布局 */
         .toast-message {
             position: fixed;
             bottom: 20px;
@@ -304,7 +310,7 @@
         }
         .toast-message i { margin-right: 6px; color: #bfd8e5; }
 
-        /* 抽象装饰点，适应小屏 */
+        /* 抽象装饰点 - 不影响滚动 */
         .dot-decor {
             position: absolute;
             width: 100px;
@@ -315,12 +321,10 @@
             right: 0;
             z-index: 0;
         }
-        /* 确保所有内容不被装饰遮挡 */
-        .reward-box { position: relative; }
     </style>
 </head>
 <body>
-    <!-- 背景抽象装饰（更轻盈） -->
+    <!-- 背景抽象装饰 -->
     <div class="dot-decor" style="top: 3%; left: 0%; width: 180px; height: 180px; background: rgba(210, 180, 160, 0.1); border-radius: 63% 37% 48% 52% / 41% 45% 55% 59%;"></div>
     <div class="dot-decor" style="bottom: 5%; right: -5%; width: 130px; height: 130px; background: rgba(160, 190, 200, 0.1); border-radius: 40% 60% 70% 30% / 40% 50% 50% 60%;"></div>
 
@@ -345,8 +349,9 @@
             <div class="qr-wrapper">
                 <!-- 请替换为您的支付宝收款码 -->
                 <img class="qr-img" 
-                     src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23f0f2f5%22%20rx%3D%2224%22%2F%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%2212%22%20fill%3D%22%231e6f9f%22%20opacity%3D%220.4%22%2F%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%22120%22%20r%3D%2218%22%20fill%3D%22%231e6f9f%22%20opacity%3D%220.3%22%2F%3E%3Ccircle%20cx%3D%2280%22%20cy%3D%22150%22%20r%3D%2210%22%20fill%3D%22%231e6f9f%22%20opacity%3D%220.5%22%2F%3E%3Cpath%20stroke%3D%22%231e6f9f%22%20stroke-width%3D%222%22%20opacity%3D%220.3%22%20d%3D%22M40%2040L160%20160%22%20stroke-dasharray%3D%226%206%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-size%3D%2214%22%20text-anchor%3D%22middle%22%20dy%3D%22.3em%22%20fill%3D%22%23344e6c%22%20font-family%3D%22Inter%2C%20sans-serif%22%3E%E6%94%B6%E6%AC%BE%E7%A0%81%3C%2Ftext%3E%3C%2Fsvg%3E'
-                     alt="支付宝收款码">
+                    src="zfb_reward.jpg"
+                     <!-- src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23f0f2f5%22%20rx%3D%2224%22%2F%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%2212%22%20fill%3D%22%231e6f9f%22%20opacity%3D%220.4%22%2F%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%22120%22%20r%3D%2218%22%20fill%3D%22%231e6f9f%22%20opacity%3D%220.3%22%2F%3E%3Ccircle%20cx%3D%2280%22%20cy%3D%22150%22%20r%3D%2210%22%20fill%3D%22%231e6f9f%22%20opacity%3D%220.5%22%2F%3E%3Cpath%20stroke%3D%22%231e6f9f%22%20stroke-width%3D%222%22%20opacity%3D%220.3%22%20d%3D%22M40%2040L160%20160%22%20stroke-dasharray%3D%226%206%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-size%3D%2214%22%20text-anchor%3D%22middle%22%20dy%3D%22.3em%22%20fill%3D%22%23344e6c%22%20font-family%3D%22Inter%2C%20sans-serif%22%3E%E6%94%B6%E6%AC%BE%E7%A0%81%3C%2Ftext%3E%3C%2Fsvg%3E' -->
+                     <!-- alt="支付宝收款码"> -->
             </div>
             <!-- 支付宝跳转扫一扫按钮 -->
             <button class="pay-button" id="alipay-pay">
@@ -363,8 +368,9 @@
             <div class="qr-wrapper">
                 <!-- 请替换为您的微信收款码 -->
                 <img class="qr-img" 
-                     src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23f0f2f5%22%20rx%3D%2224%22%2F%3E%3Ccircle%20cx%3D%2245%22%20cy%3D%2280%22%20r%3D%2214%22%20fill%3D%22%232d6a4f%22%20opacity%3D%220.35%22%2F%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%2250%22%20r%3D%2220%22%20fill%3D%22%232d6a4f%22%20opacity%3D%220.25%22%2F%3E%3Ccircle%20cx%3D%22110%22%20cy%3D%22150%22%20r%3D%2215%22%20fill%3D%22%232d6a4f%22%20opacity%3D%220.3%22%2F%3E%3Cpath%20stroke%3D%22%232d6a4f%22%20stroke-width%3D%222%22%20opacity%3D%220.3%22%20d%3D%22M160%2040L50%20160%22%20stroke-dasharray%3D%228%204%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-size%3D%2214%22%20text-anchor%3D%22middle%22%20dy%3D%22.3em%22%20fill%3D%22%23344e6c%22%20font-family%3D%22Inter%2C%20sans-serif%22%3E%E6%94%B6%E6%AC%BE%E7%A0%81%3C%2Ftext%3E%3C%2Fsvg%3E'
-                     alt="微信收款码">
+                      src="vx_reward.jpg"
+                     <!-- src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23f0f2f5%22%20rx%3D%2224%22%2F%3E%3Ccircle%20cx%3D%2245%22%20cy%3D%2280%22%20r%3D%2214%22%20fill%3D%22%232d6a4f%22%20opacity%3D%220.35%22%2F%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%2250%22%20r%3D%2220%22%20fill%3D%22%232d6a4f%22%20opacity%3D%220.25%22%2F%3E%3Ccircle%20cx%3D%22110%22%20cy%3D%22150%22%20r%3D%2215%22%20fill%3D%22%232d6a4f%22%20opacity%3D%220.3%22%2F%3E%3Cpath%20stroke%3D%22%232d6a4f%22%20stroke-width%3D%222%22%20opacity%3D%220.3%22%20d%3D%22M160%2040L50%20160%22%20stroke-dasharray%3D%228%204%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-size%3D%2214%22%20text-anchor%3D%22middle%22%20dy%3D%22.3em%22%20fill%3D%22%23344e6c%22%20font-family%3D%22Inter%2C%20sans-serif%22%3E%E6%94%B6%E6%AC%BE%E7%A0%81%3C%2Ftext%3E%3C%2Fsvg%3E' -->
+                     <!-- alt="微信收款码"> -->
             </div>
             <!-- 微信按钮：长按保存/截图 -->
             <button class="pay-button" id="wechat-pay">
@@ -377,7 +383,7 @@
 
         <!-- 页脚 -->
         <div class="footer-note">
-            <span>· 随缘打赏 ·</span>
+            <span>· 谢谢老板 ·</span>
         </div>
     </div>
 
@@ -403,11 +409,9 @@
             // 支付宝跳转扫一扫
             document.getElementById('alipay-pay').addEventListener('click', function(e) {
                 e.stopPropagation();
-                // 支付宝扫一扫 Scheme
                 const alipayScanUrl = 'alipayqr://platformapi/startapp?saId=10000007';
                 window.location.href = alipayScanUrl;
                 showToast('正在打开支付宝...', 'fa-brands fa-alipay');
-                // 降级检测
                 setTimeout(() => {
                     if (!document.hidden) {
                         showToast('未检测到支付宝，请使用扫码', 'fa-regular fa-circle-exclamation');
@@ -419,15 +423,13 @@
             document.getElementById('wechat-pay').addEventListener('click', function(e) {
                 e.stopPropagation();
                 showToast('请长按二维码保存图片', 'fa-brands fa-weixin');
-                // 可选尝试唤起微信（成功率低，不强制）
-                // window.location.href = 'weixin://scanqrcode';
             });
 
-            // 卡片点击（空白区域）反馈功德+1（可选）
+            // 卡片点击（空白区域）反馈功德+1
             const cards = document.querySelectorAll('.card');
             cards.forEach(card => {
                 card.addEventListener('click', function(e) {
-                    if (e.target.closest('.pay-button')) return;  // 按钮单独处理
+                    if (e.target.closest('.pay-button')) return;
                     this.style.transition = 'transform 0.15s';
                     setTimeout(() => { this.style.transition = ''; }, 150);
                     let platform = this.classList.contains('alipay') ? '支付宝' : '微信';
