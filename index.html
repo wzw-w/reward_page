@@ -2,12 +2,13 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>功德箱·打赏</title>
-    <!-- Font Awesome 6 图标库 -->
+    <!-- 关键：移动端适配视口，禁止缩放以保持精确布局（可选） -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>功德箱 · 随缘打赏</title>
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* 极简重置 + 抽象基底 - 保持你之前的风格不变 */
+        /* 重置 + 自适应基座 */
         * {
             margin: 0;
             padding: 0;
@@ -15,35 +16,35 @@
         }
 
         body {
-            min-height: 100vh;
-            background: #f4f2f0;
+            min-height: 100vh;           /* 至少撑满屏幕 */
             display: flex;
-            align-items: center;
+            align-items: center;          /* 垂直居中 */
             justify-content: center;
-            padding: 20px 16px;
+            background: #f4f2f0;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            padding: 12px;                /* 留出安全边距，防止贴边 */
             position: relative;
-            overflow-x: hidden;
+            overflow-x: hidden;            /* 禁止横向滚动 */
         }
 
-        /* 抽象背景元素 */
+        /* 抽象背景元素（保留，但缩小影响范围） */
         body::before {
             content: '';
             position: absolute;
-            width: 60vmax;
-            height: 60vmax;
+            width: 80vmax;
+            height: 80vmax;
             background: rgba(210, 190, 170, 0.15);
             border-radius: 50%;
             top: -20vmax;
-            right: -10vmax;
+            right: -20vmax;
             z-index: 0;
         }
 
         body::after {
             content: '';
             position: absolute;
-            width: 40vmin;
-            height: 40vmin;
+            width: 50vmin;
+            height: 50vmin;
             background: rgba(170, 200, 210, 0.2);
             border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
             bottom: 5vh;
@@ -51,48 +52,48 @@
             z-index: 0;
         }
 
+        /* 主容器：宽度自适应，最大宽度适合手机，弹性列 */
         .reward-box {
-            max-width: 380px;
             width: 100%;
+            max-width: 380px;              /* 舒适卡片宽度 */
             margin: 0 auto;
             position: relative;
             z-index: 10;
             display: flex;
             flex-direction: column;
-            gap: 32px;
+            gap: 16px;                     /* 间隙缩小，适应小屏 */
         }
 
-        /* 标题区 - 功德箱 + 木鱼动画 */
+        /* 标题区：功德箱+木鱼，紧凑 */
         .title {
             text-align: center;
-            margin-bottom: 8px;
             animation: fadeIn 0.8s ease-out;
         }
         .title h1 {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            font-size: 2.4rem;
+            gap: 8px;                       /* 缩小标题与动画间距 */
+            font-size: 2rem;                 /* 稍缩小，防止溢出 */
             font-weight: 400;
             letter-spacing: -0.5px;
             color: #2c3e4e;
             background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
-            padding: 8px 32px;
+            padding: 6px 24px;               /* 上下缩小 */
             border-radius: 60px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.02);
             border: 1px solid rgba(255,255,255,0.8);
-            line-height: 1.3;
-            white-space: nowrap;
+            line-height: 1.2;
+            white-space: nowrap;              /* 强制不换行，因为宽度足够 */
         }
 
-        /* 木鱼动画 */
+        /* 木鱼动画容器，与标题字体匹配 */
         .muyu-animation {
             display: inline-block;
-            width: 2.4rem;
-            height: 2.4rem;
+            width: 2.2rem;                    /* 稍缩小 */
+            height: 2.2rem;
             position: relative;
             vertical-align: middle;
             flex-shrink: 0;
@@ -100,10 +101,10 @@
 
         .muyu {
             position: absolute;
-            bottom: 0.3rem;
+            bottom: 0.2rem;
             left: 0.2rem;
-            width: 2.0rem;
-            height: 1.0rem;
+            width: 1.8rem;
+            height: 0.9rem;
             background-color: #b7a48b;
             border-radius: 50% / 40% 40% 60% 60%;
             box-shadow: inset 0 -2px 4px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.1);
@@ -113,8 +114,8 @@
         .muyu::after {
             content: '';
             position: absolute;
-            top: 0.3rem;
-            left: 0.6rem;
+            top: 0.25rem;
+            left: 0.5rem;
             width: 0.8rem;
             height: 0.2rem;
             background: #5e4b3a;
@@ -124,10 +125,10 @@
 
         .hammer {
             position: absolute;
-            bottom: 0.8rem;
-            left: 1.1rem;
-            width: 0.25rem;
-            height: 1.2rem;
+            bottom: 0.6rem;
+            left: 1.0rem;
+            width: 0.2rem;
+            height: 1.0rem;
             background: #8b6f4c;
             border-radius: 4px;
             transform-origin: bottom center;
@@ -138,11 +139,11 @@
         .hammer::before {
             content: '';
             position: absolute;
-            top: -0.3rem;
+            top: -0.25rem;
             left: 50%;
             transform: translateX(-50%);
-            width: 0.6rem;
-            height: 0.6rem;
+            width: 0.5rem;
+            height: 0.5rem;
             background: #a58357;
             border-radius: 50%;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
@@ -150,26 +151,26 @@
 
         @keyframes knock {
             0%, 100% { transform: rotate(0deg) translateY(0); }
-            20% { transform: rotate(5deg) translateY(6px); }
+            20% { transform: rotate(5deg) translateY(5px); }
             40% { transform: rotate(-2deg) translateY(2px); }
             60% { transform: rotate(1deg) translateY(0); }
         }
 
         @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(12px); }
+            0% { opacity: 0; transform: translateY(10px); }
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* 卡片通用设计 */
+        /* 卡片设计：内边距缩紧，防止过高 */
         .card {
             background: rgba(255, 255, 255, 0.75);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border-radius: 36px;
-            padding: 30px 24px 24px;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.02);
+            border-radius: 30px;                /* 稍微圆润 */
+            padding: 20px 18px 18px;            /* 上下内边距减少 */
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.1);
             border: 1px solid rgba(255, 255, 255, 0.7);
-            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+            transition: all 0.3s ease;
             animation: fadeIn 0.9s ease-out forwards;
             opacity: 0;
             transform-origin: center;
@@ -185,21 +186,21 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 14px;
-            margin-bottom: 28px;
-            font-size: 1.8rem;
+            gap: 10px;
+            margin-bottom: 16px;                /* 减少间距 */
+            font-size: 1.6rem;                   /* 适当缩小 */
             font-weight: 380;
             color: #334e68;
         }
 
         .alipay .platform-header i {
             color: #1e6f9f;
-            font-size: 2.2rem;
+            font-size: 2.0rem;
             opacity: 0.8;
         }
         .wechat .platform-header i {
             color: #2d6a4f;
-            font-size: 2.2rem;
+            font-size: 2.0rem;
             opacity: 0.8;
         }
 
@@ -208,138 +209,123 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 16px 0 24px;
+            margin: 8px 0 16px;                  /* 上下减少 */
         }
 
         .qr-img {
             display: block;
             width: 100%;
-            max-width: 180px;
+            max-width: 160px;                     /* 图片缩小，防止溢出 */
             height: auto;
-            border-radius: 24px;
-            box-shadow: 0 12px 24px -10px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            box-shadow: 0 12px 20px -10px rgba(0,0,0,0.1);
             background: #ffffff;
-            transition: transform 0.25s ease, box-shadow 0.25s;
             border: 2px solid rgba(255,255,255,0.8);
         }
 
-        .qr-img:hover {
-            transform: scale(1.02);
-            box-shadow: 0 18px 32px -12px rgba(0,0,0,0.15);
-        }
-
-        /* ========= 关键修改：支付按钮样式 ========= */
+        /* 支付按钮 */
         .pay-button {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             width: 100%;
-            padding: 14px 0;
-            margin-top: 8px;
-            border-radius: 50px;
-            font-size: 1.1rem;
+            padding: 12px 0;                      /* 按钮高度适中 */
+            border-radius: 40px;
+            font-size: 1rem;
             font-weight: 450;
             color: white;
             border: none;
             cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 8px 16px -6px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 12px -4px rgba(0,0,0,0.2);
             font-family: inherit;
         }
 
-        .pay-button i {
-            font-size: 1.2rem;
-        }
-
-        .pay-button:active {
-            transform: scale(0.96);
-            box-shadow: 0 4px 8px -4px rgba(0,0,0,0.2);
-        }
+        .pay-button i { font-size: 1.1rem; }
+        .pay-button:active { transform: scale(0.96); }
 
         .alipay .pay-button {
             background: linear-gradient(145deg, #1677ff, #0d5cba);
         }
-
         .wechat .pay-button {
             background: linear-gradient(145deg, #07c160, #059b4c);
         }
 
-        /* 备用提示文字（微信专用） */
+        /* 微信备用提示 */
         .fallback-hint {
             text-align: center;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #8a9aa8;
-            margin-top: 8px;
+            margin-top: 6px;
             opacity: 0.8;
         }
 
-        /* 辅助文字区域隐藏原提示，用按钮替代 */
-        .hint {
-            display: none;  /* 隐藏原来的文字提示 */
-        }
+        /* 隐藏原来的提示 */
+        .hint { display: none; }
 
         /* 页脚 */
         .footer-note {
             text-align: center;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #8b9aaa;
             opacity: 0.6;
             margin-top: 4px;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
         }
 
-        /* Toast提示 */
+        /* Toast 提示 */
         .toast-message {
             position: fixed;
-            bottom: 28px;
+            bottom: 20px;
             left: 20px;
             right: 20px;
-            max-width: 280px;
+            max-width: 240px;
             margin: 0 auto;
-            background: rgba(45, 55, 65, 0.85);
-            backdrop-filter: blur(12px);
+            background: rgba(45, 55, 65, 0.9);
+            backdrop-filter: blur(10px);
             color: #f0f4f8;
             text-align: center;
-            padding: 12px 22px;
-            border-radius: 50px;
-            font-size: 0.95rem;
-            box-shadow: 0 10px 25px -8px rgba(0,0,0,0.2);
-            border: 1px solid rgba(255,255,255,0.2);
-            transform: translateY(100px);
+            padding: 10px 16px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            box-shadow: 0 8px 20px -6px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.15);
+            transform: translateY(80px);
             opacity: 0;
-            transition: transform 0.25s ease, opacity 0.2s;
+            transition: transform 0.2s ease, opacity 0.15s;
             z-index: 999;
             pointer-events: none;
         }
-
         .toast-message.show {
             transform: translateY(0);
             opacity: 1;
         }
+        .toast-message i { margin-right: 6px; color: #bfd8e5; }
 
-        .toast-message i { margin-right: 8px; color: #bfd8e5; }
-
-        /* 抽象装饰 */
+        /* 抽象装饰点，适应小屏 */
         .dot-decor {
             position: absolute;
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             background: rgba(190, 170, 150, 0.1);
-            bottom: 20px;
-            right: 10px;
+            bottom: 10px;
+            right: 0;
             z-index: 0;
         }
+        /* 确保所有内容不被装饰遮挡 */
+        .reward-box { position: relative; }
     </style>
 </head>
 <body>
-    <div class="dot-decor" style="top: 5%; left: 2%; width: 200px; height: 200px; background: rgba(210, 180, 160, 0.1); border-radius: 63% 37% 48% 52% / 41% 45% 55% 59%;"></div>
-    <div class="dot-decor" style="bottom: 10%; right: 0%; width: 150px; height: 150px; background: rgba(160, 190, 200, 0.1); border-radius: 40% 60% 70% 30% / 40% 50% 50% 60%;"></div>
+    <!-- 背景抽象装饰（更轻盈） -->
+    <div class="dot-decor" style="top: 3%; left: 0%; width: 180px; height: 180px; background: rgba(210, 180, 160, 0.1); border-radius: 63% 37% 48% 52% / 41% 45% 55% 59%;"></div>
+    <div class="dot-decor" style="bottom: 5%; right: -5%; width: 130px; height: 130px; background: rgba(160, 190, 200, 0.1); border-radius: 40% 60% 70% 30% / 40% 50% 50% 60%;"></div>
 
     <div class="reward-box">
-        <!-- 标题：功德箱 + 敲木鱼 -->
+        <!-- 标题：功德箱 + 木鱼动画 -->
         <div class="title">
             <h1>
                 <span>功德箱</span>
@@ -350,52 +336,52 @@
             </h1>
         </div>
 
-        <!-- 支付宝卡片 - 改为跳转支付宝扫一扫 -->
-        <div class="card alipay" data-platform="alipay">
+        <!-- 支付宝卡片 -->
+        <div class="card alipay">
             <div class="platform-header">
                 <i class="fab fa-alipay"></i>
                 <span>支付宝</span>
             </div>
             <div class="qr-wrapper">
+                <!-- 请替换为您的支付宝收款码 -->
                 <img class="qr-img" 
-                src="zfb_reward.jpg"
-                     <!-- src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23f0f2f5%22%20rx%3D%2224%22%2F%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%2212%22%20fill%3D%22%231e6f9f%22%20opacity%3D%220.4%22%2F%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%22120%22%20r%3D%2218%22%20fill%3D%22%231e6f9f%22%20opacity%3D%220.3%22%2F%3E%3Ccircle%20cx%3D%2280%22%20cy%3D%22150%22%20r%3D%2210%22%20fill%3D%22%231e6f9f%22%20opacity%3D%220.5%22%2F%3E%3Cpath%20stroke%3D%22%231e6f9f%22%20stroke-width%3D%222%22%20opacity%3D%220.3%22%20d%3D%22M40%2040L160%20160%22%20stroke-dasharray%3D%226%206%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-size%3D%2214%22%20text-anchor%3D%22middle%22%20dy%3D%22.3em%22%20fill%3D%22%23344e6c%22%20font-family%3D%22Inter%2C%20sans-serif%22%3E%E6%94%B6%E6%AC%BE%E7%A0%81%3C%2Ftext%3E%3C%2Fsvg%3E' -->
-                     <!-- alt="支付宝收款码，请替换为您的图片"> -->
+                     src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23f0f2f5%22%20rx%3D%2224%22%2F%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%2212%22%20fill%3D%22%231e6f9f%22%20opacity%3D%220.4%22%2F%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%22120%22%20r%3D%2218%22%20fill%3D%22%231e6f9f%22%20opacity%3D%220.3%22%2F%3E%3Ccircle%20cx%3D%2280%22%20cy%3D%22150%22%20r%3D%2210%22%20fill%3D%22%231e6f9f%22%20opacity%3D%220.5%22%2F%3E%3Cpath%20stroke%3D%22%231e6f9f%22%20stroke-width%3D%222%22%20opacity%3D%220.3%22%20d%3D%22M40%2040L160%20160%22%20stroke-dasharray%3D%226%206%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-size%3D%2214%22%20text-anchor%3D%22middle%22%20dy%3D%22.3em%22%20fill%3D%22%23344e6c%22%20font-family%3D%22Inter%2C%20sans-serif%22%3E%E6%94%B6%E6%AC%BE%E7%A0%81%3C%2Ftext%3E%3C%2Fsvg%3E'
+                     alt="支付宝收款码">
             </div>
-            <!-- 支付宝支付按钮 - 唤起扫一扫 -->
+            <!-- 支付宝跳转扫一扫按钮 -->
             <button class="pay-button" id="alipay-pay">
                 <i class="fab fa-alipay"></i> 打开支付宝扫一扫
             </button>
         </div>
 
-        <!-- 微信卡片 - 因限制，提供复制/提示方案 -->
-        <div class="card wechat" data-platform="wechat">
+        <!-- 微信卡片 -->
+        <div class="card wechat">
             <div class="platform-header">
                 <i class="fab fa-weixin"></i>
                 <span>微信</span>
             </div>
             <div class="qr-wrapper">
+                <!-- 请替换为您的微信收款码 -->
                 <img class="qr-img" 
-                src="vx_reward.jpg"
-                     <!-- src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23f0f2f5%22%20rx%3D%2224%22%2F%3E%3Ccircle%20cx%3D%2245%22%20cy%3D%2280%22%20r%3D%2214%22%20fill%3D%22%232d6a4f%22%20opacity%3D%220.35%22%2F%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%2250%22%20r%3D%2220%22%20fill%3D%22%232d6a4f%22%20opacity%3D%220.25%22%2F%3E%3Ccircle%20cx%3D%22110%22%20cy%3D%22150%22%20r%3D%2215%22%20fill%3D%22%232d6a4f%22%20opacity%3D%220.3%22%2F%3E%3Cpath%20stroke%3D%22%232d6a4f%22%20stroke-width%3D%222%22%20opacity%3D%220.3%22%20d%3D%22M160%2040L50%20160%22%20stroke-dasharray%3D%228%204%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-size%3D%2214%22%20text-anchor%3D%22middle%22%20dy%3D%22.3em%22%20fill%3D%22%23344e6c%22%20font-family%3D%22Inter%2C%20sans-serif%22%3E%E6%94%B6%E6%AC%BE%E7%A0%81%3C%2Ftext%3E%3C%2Fsvg%3E' -->
-                     <!-- alt="微信收款码，请替换为您的图片"> -->
+                     src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23f0f2f5%22%20rx%3D%2224%22%2F%3E%3Ccircle%20cx%3D%2245%22%20cy%3D%2280%22%20r%3D%2214%22%20fill%3D%22%232d6a4f%22%20opacity%3D%220.35%22%2F%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%2250%22%20r%3D%2220%22%20fill%3D%22%232d6a4f%22%20opacity%3D%220.25%22%2F%3E%3Ccircle%20cx%3D%22110%22%20cy%3D%22150%22%20r%3D%2215%22%20fill%3D%22%232d6a4f%22%20opacity%3D%220.3%22%2F%3E%3Cpath%20stroke%3D%22%232d6a4f%22%20stroke-width%3D%222%22%20opacity%3D%220.3%22%20d%3D%22M160%2040L50%20160%22%20stroke-dasharray%3D%228%204%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-size%3D%2214%22%20text-anchor%3D%22middle%22%20dy%3D%22.3em%22%20fill%3D%22%23344e6c%22%20font-family%3D%22Inter%2C%20sans-serif%22%3E%E6%94%B6%E6%AC%BE%E7%A0%81%3C%2Ftext%3E%3C%2Fsvg%3E'
+                     alt="微信收款码">
             </div>
-            <!-- 微信支付按钮 - 因限制，改为复制/提示 -->
+            <!-- 微信按钮：长按保存/截图 -->
             <button class="pay-button" id="wechat-pay">
-                <i class="fab fa-weixin"></i> 长按保存/截图收款码
+                <i class="fab fa-weixin"></i> 长按保存/截图
             </button>
             <div class="fallback-hint">
-                <i class="fa-regular fa-circle-info"></i> 保存图片后，在微信中扫一扫
+                <i class="fa-regular fa-circle-info"></i> 保存后打开微信扫一扫
             </div>
         </div>
 
-        <!-- 极简页脚 -->
+        <!-- 页脚 -->
         <div class="footer-note">
-            <span>· 谢谢老板 ·</span>
+            <span>· 随缘打赏 ·</span>
         </div>
     </div>
 
-    <!-- Toast 轻提示容器 -->
+    <!-- Toast 提示层 -->
     <div class="toast-message" id="toast">
         <i class="fa-regular fa-heart"></i> 功德无量
     </div>
@@ -414,62 +400,43 @@
                 }, 1600);
             }
 
-            // 支付宝支付 - 唤起扫一扫
+            // 支付宝跳转扫一扫
             document.getElementById('alipay-pay').addEventListener('click', function(e) {
                 e.stopPropagation();
-                
-                // 唤起支付宝扫一扫的URL Scheme
-                // 格式: alipayqr://platformapi/startapp?saId=10000007 [citation:9]
+                // 支付宝扫一扫 Scheme
                 const alipayScanUrl = 'alipayqr://platformapi/startapp?saId=10000007';
-                
-                // 尝试唤起支付宝
                 window.location.href = alipayScanUrl;
-                
-                // 显示提示
                 showToast('正在打开支付宝...', 'fa-brands fa-alipay');
-                
-                // 检测是否成功唤起（超时则提示）
+                // 降级检测
                 setTimeout(() => {
-                    // 如果页面仍然可见（未跳转），说明可能未安装支付宝
                     if (!document.hidden) {
-                        showToast('未检测到支付宝App，请使用扫码', 'fa-regular fa-circle-exclamation');
+                        showToast('未检测到支付宝，请使用扫码', 'fa-regular fa-circle-exclamation');
                     }
                 }, 1000);
             });
 
-            // 微信支付按钮 - 因限制，改为提示保存图片
+            // 微信：提示保存图片
             document.getElementById('wechat-pay').addEventListener('click', function(e) {
                 e.stopPropagation();
-                
-                // 提示用户长按保存图片
                 showToast('请长按二维码保存图片', 'fa-brands fa-weixin');
-                
-                // 也可以尝试唤起微信（但大概率失败）
-                // const wechatUrl = 'weixin://';  // 仅能打开微信，无法直接支付
-                // window.location.href = wechatUrl;
+                // 可选尝试唤起微信（成功率低，不强制）
+                // window.location.href = 'weixin://scanqrcode';
             });
 
-            // 卡片整体点击保持原来的Toast（可选）
+            // 卡片点击（空白区域）反馈功德+1（可选）
             const cards = document.querySelectorAll('.card');
             cards.forEach(card => {
                 card.addEventListener('click', function(e) {
-                    // 如果点击的是按钮内部，不重复触发
-                    if (e.target.closest('.pay-button')) return;
-                    
+                    if (e.target.closest('.pay-button')) return;  // 按钮单独处理
                     this.style.transition = 'transform 0.15s';
                     setTimeout(() => { this.style.transition = ''; }, 150);
-                    
-                    let platform = this.classList.contains('alipay') ? 'alipay' : 'wechat';
-                    if (platform === 'alipay') {
-                        showToast('支付宝·功德+1', 'fa-regular fa-star');
-                    } else {
-                        showToast('微信·功德+1', 'fa-regular fa-star');
-                    }
+                    let platform = this.classList.contains('alipay') ? '支付宝' : '微信';
+                    showToast(`${platform}·功德+1`, 'fa-regular fa-star');
                 });
             });
         })();
     </script>
 
-    <!-- 替换说明：请将两个 img 的 src 改为您自己的收款码图片 -->
+    <!-- 提示：请将两个 img 的 src 替换为您自己的收款码图片（建议正方形 300x300以上） -->
 </body>
 </html>
