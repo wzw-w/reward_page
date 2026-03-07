@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <!-- 移动端适配必备：视口设置，禁止缩放以保持最佳阅读效果（用户仍可双指缩放） -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>简单·打赏</title>
+    <!-- Font Awesome 6 免费图标库 (仅用两个品牌图标，轻量简洁) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 极简重置 + 盒子模型优化 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f2f4f6;   /* 柔和背景，突出卡片 */
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            display: flex;
+            align-items: center;     /* 垂直居中（内容少时也舒服） */
+            min-height: 100vh;        /* 全屏高度，让卡片自然居中 */
+            padding: 16px;
+        }
+
+        /* 主容器：移动优先，最大宽度400px（适合手机卡片），水平居中 */
+        .reward-box {
+            max-width: 400px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* 标题区：简单干脆 */
+        .title {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .title h1 {
+            font-size: 2rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            color: #1e293b;
+            background: rgba(255,255,255,0.5);
+            backdrop-filter: blur(2px);
+            display: inline-block;
+            padding: 8px 24px;
+            border-radius: 60px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        /* 卡片通用设计：白底、圆角、柔和阴影 */
+        .card {
+            background: white;
+            border-radius: 32px;
+            padding: 28px 20px 24px 20px;
+            box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.12);
+            transition: transform 0.15s ease;
+        }
+        .card:active {
+            transform: scale(0.99); /* 微小的按压反馈，移动端友好 */
+        }
+
+        /* 平台头部：图标 + 名称 + 品牌色 */
+        .platform-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 24px;
+            font-size: 1.8rem;
+            font-weight: 500;
+        }
+        /* 支付宝专属色 */
+        .alipay .platform-header {
+            color: #1677ff;
+        }
+        .alipay .platform-header i {
+            color: #1677ff;
+            font-size: 2.2rem;
+        }
+        /* 微信专属色 */
+        .wechat .platform-header {
+            color: #07c160;
+        }
+        .wechat .platform-header i {
+            color: #07c160;
+            font-size: 2.2rem;
+        }
+
+        /* 二维码图片容器：让图片自适应且居中 */
+        .qr-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px 0 16px 0;
+        }
+        /* 二维码图片本身：完全响应式，最大200px足够清晰 */
+        .qr-img {
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+            background-color: #fafafa;  /* 图片加载过程中的占位背景 */
+        }
+
+        /* 辅助文字：轻量提示 */
+        .hint {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #64748b;
+            border-top: 1px dashed #e2e8f0;
+            padding-top: 16px;
+            margin-top: 8px;
+            letter-spacing: 0.3px;
+        }
+        .hint i {
+            font-size: 0.8rem;
+            margin-right: 4px;
+            opacity: 0.8;
+        }
+
+        /* 页脚（可有可无，但为了完整保留） */
+        .footer-note {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 8px;
+        }
+        .footer-note span {
+            background: rgba(255,255,255,0.6);
+            padding: 4px 12px;
+            border-radius: 40px;
+        }
+
+        /* 用户替换二维码的说明：以注释形式存在，不在视觉上干扰，但可通过开发者工具看见 */
+        /* 实际使用请将 src 替换为您的真实收款码图片地址 */
+    </style>
+</head>
+<body>
+    <div class="reward-box">
+        <!-- 标题：简洁有力 -->
+        <div class="title">
+            <h1>🍻 助力我活过今天</h1>
+        </div>
+
+        <!-- 支付宝打赏卡片 -->
+        <div class="card alipay">
+            <div class="platform-header">
+                <i class="fab fa-alipay"></i>   <!-- Font Awesome 支付宝品牌图标 -->
+                <span>支付宝</span>
+            </div>
+            <!-- 二维码区域：当前为占位SVG（显示“Alipay QR”字样 + 浅蓝色背景），
+                 请您将 src 替换为您自己的支付宝收款码图片 (支持jpg/png/webp) 
+                 例如： <img class="qr-img" src="./alipay-qr.jpg" alt="支付宝收款码"> 
+                 如果图片放在同一目录，直接写文件名即可。 -->
+            <div class="qr-wrapper">
+                <img class="qr-img" 
+                     src="zfb_reward.jpg"
+                    <!-- src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E1F5FE%22%20rx%3D%2216%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-size%3D%2218%22%20text-anchor%3D%22middle%22%20dy%3D%22.3em%22%20font-family%3D%22Arial%2C%20sans-serif%22%20fill%3D%22%23333%22%3EAlipay%20QR%3C%2Ftext%3E%3C%2Fsvg%3E' -->
+                     <!-- alt="支付宝收款码，请替换为自己的二维码图片" -->
+                      
+            </div>
+            <!-- 极简提示：告知用户操作方式 -->
+            <div class="hint">
+                <i class="fa-regular fa-circle-check"></i> 打开支付宝扫一扫
+            </div>
+        </div>
+
+        <!-- 微信打赏卡片 -->
+        <div class="card wechat">
+            <div class="platform-header">
+                <i class="fab fa-weixin"></i>   <!-- Font Awesome 微信品牌图标 -->
+                <span>微信</span>
+            </div>
+            <!-- 微信二维码占位：浅绿色背景 + WeChat QR 文字
+                 请将 src 替换为您自己的微信收款码图片 (例如 ./wechat-qr.png) -->
+            <div class="qr-wrapper">
+                <img class="qr-img" 
+                src="vx_reward.jpg"
+                     <!-- src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E0F2E0%22%20rx%3D%2216%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-size%3D%2218%22%20text-anchor%3D%22middle%22%20dy%3D%22.3em%22%20font-family%3D%22Arial%2C%20sans-serif%22%20fill%3D%22%23333%22%3EWeChat%20QR%3C%2Ftext%3E%3C%2Fsvg%3E' -->
+                     <!-- alt="vx_reward.jpg"> -->
+            </div>
+            <div class="hint">
+                <i class="fa-regular fa-circle-check"></i> 打开微信扫一扫
+            </div>
+        </div>
+
+        <!-- 极简脚注：可自定义为您的域名或昵称，目前简单放置 -->
+        <div class="footer-note">
+            <span>· 感谢心意 ·</span>
+        </div>
+    </div>
+
+    <!-- ========= 使用说明 ========= -->
+    <!-- 1. 准备您的支付宝和微信收款二维码图片（建议正方形，分辨率300x300以上）。
+         2. 将图片放在和本HTML相同的目录下（或指定路径）。
+         3. 修改上面两个 <img> 标签的 src 属性：
+             例如支付宝改为 src="./alipay.jpg" 
+                 微信改为 src="./wechat.png"
+         4. （可选）调整卡片内提示文字，或删除占位SVG。
+         5. 上传到您的域名主机空间，确保 index.html 为首选文件。
+    -->
+    <!-- 如果您没有准备图片，当前会显示淡蓝色/淡绿色占位图，并带有 Alipay/WeChat 字样，方便预览布局 -->
+</body>
+</html>
