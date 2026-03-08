@@ -498,7 +498,7 @@
         </div>
     </div>
 
-    <script defer src="/_vercel/insights/script.js">
+    <script >
         (function() {
             const toast = document.getElementById('toast');
             let timer = null;
@@ -576,11 +576,15 @@
 
         <!-- Vercel Web Analytics -->
 
-  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+
 
 
     </script>
-
+<!-- Vercel Web Analytics -->
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
     <!-- 说明：请将两个弹框中的收款码图片 src 替换为您自己的收款码图片（建议正方形300x300以上） -->
 </body>
 </html>
