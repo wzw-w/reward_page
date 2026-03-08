@@ -586,5 +586,23 @@
 </script>
 <script defer src="/_vercel/insights/script.js"></script>
     <!-- 说明：请将两个弹框中的收款码图片 src 替换为您自己的收款码图片（建议正方形300x300以上） -->
+
+    <script>
+  // 页面加载后记录访客 IP
+  (function recordIP() {
+    fetch('/api/record-ip')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          console.log('IP recorded successfully');
+        } else {
+          console.warn('Failed to record IP:', data.error);
+        }
+      })
+      .catch(err => {
+        console.error('Error calling record-ip API:', err);
+      });
+  })();
+</script>
 </body>
 </html>
