@@ -1,25 +1,31 @@
 // api/record-ip.js
 import { kv } from '@vercel/kv';
-import { ipAddress, geolocation } from '@vercel/functions';
 
 export const config = {
-  runtime: 'edge',  // 指定为 Edge Function
+  runtime: 'edge',
 };
 
 export default async function handler(request) {
-  // 允许跨域
   const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
     'Content-Type': 'application/json',
   };
 
   try {
-    // 使用官方方法获取真实 IP 和地理位置
-    const ip = ipAddress(request);
-    const geo = geolocation(request);
+    // 从请求头获取真实 IP（按优先级）
+    const realIp = request.headers.get('x-vercel-ip')
+                   || request.headers.get('x-vercel-forwarded-for')
+                   || request.headers.get('x-forwarded-for')
+                   || request.headers.get('x-real-ip')
+                   || 'unknown';
+
+    // 获取国家信息（如果有）
+    const country = request.headers.get('x-vercel-ip-country') || 'unknown';
+    const city = request.headers.get('x-vercel-ip-city') || 'unknown';
+
     const userAgent = request.headers.get('user-agent') || 'unknown';
 
-    // 生成北京时间
+    // 北京时间
     const beijingTime = new Date().toLocaleString('zh-CN', {
       timeZone: 'Asia/Shanghai',
       year: 'numeric',
@@ -31,27 +37,24 @@ export default async function handler(request) {
       hour12: false,
     }).replace(/\//g, '-');
 
-    // 存入 KV 数据库
     await kv.lpush('visitors', JSON.stringify({
-      ip,
-      country: geo?.country || 'unknown',
-      city: geo?.city || 'unknown',
+      ip: realIp,
+      country,
+      city,
       userAgent,
       timestamp: beijingTime,
     }));
     await kv.ltrim('visitors', 0, 999);
 
-    // 返回成功响应（包含 IP 用于调试）
     return new Response(JSON.stringify({ 
       success: true, 
-      ip, 
-      country: geo?.country 
+      ip: realIp, 
+      country 
     }), {
       status: 200,
       headers: corsHeaders,
     });
   } catch (error) {
-    console.error('KV error:', error);
     return new Response(JSON.stringify({ 
       success: false, 
       error: error.message 
