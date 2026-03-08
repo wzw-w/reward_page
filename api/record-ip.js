@@ -1,45 +1,63 @@
 // api/record-ip.js
 import { kv } from '@vercel/kv';
+import { ipAddress, geolocation } from '@vercel/functions';
 
-export default async function handler(request, response) {
+export const config = {
+  runtime: 'edge',  // 指定为 Edge Function
+};
+
+export default async function handler(request) {
   // 允许跨域
-  response.setHeader('Access-Control-Allow-Origin', '*');
-
-  // 从 Vercel 请求头获取真实 IP
-  const realIp = request.headers['x-vercel-forwarded-for'] 
-                 || request.headers['x-forwarded-for'] 
-                 || request.socket.remoteAddress;
-
-  const userAgent = request.headers['user-agent'] || 'unknown';
-
-  // 生成北京时间
-  const beijingTime = new Date().toLocaleString('zh-CN', { 
-    timeZone: 'Asia/Shanghai',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false 
-  }).replace(/\//g, '-');
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Content-Type': 'application/json',
+  };
 
   try {
-    await kv.lpush('visitors', JSON.stringify({
-      ip: realIp,
-      userAgent,
-      timestamp: beijingTime
-    }));
+    // 使用官方方法获取真实 IP 和地理位置
+    const ip = ipAddress(request);
+    const geo = geolocation(request);
+    const userAgent = request.headers.get('user-agent') || 'unknown';
 
+    // 生成北京时间
+    const beijingTime = new Date().toLocaleString('zh-CN', {
+      timeZone: 'Asia/Shanghai',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    }).replace(/\//g, '-');
+
+    // 存入 KV 数据库
+    await kv.lpush('visitors', JSON.stringify({
+      ip,
+      country: geo?.country || 'unknown',
+      city: geo?.city || 'unknown',
+      userAgent,
+      timestamp: beijingTime,
+    }));
     await kv.ltrim('visitors', 0, 999);
 
-    response.status(200).json({ 
+    // 返回成功响应（包含 IP 用于调试）
+    return new Response(JSON.stringify({ 
       success: true, 
-      message: 'IP recorded', 
-      ip: realIp  // 返回 IP 用于调试
+      ip, 
+      country: geo?.country 
+    }), {
+      status: 200,
+      headers: corsHeaders,
     });
   } catch (error) {
     console.error('KV error:', error);
-    response.status(500).json({ success: false, error: error.message });
+    return new Response(JSON.stringify({ 
+      success: false, 
+      error: error.message 
+    }), {
+      status: 500,
+      headers: corsHeaders,
+    });
   }
 }
