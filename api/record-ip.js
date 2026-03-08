@@ -1,31 +1,33 @@
-
-// api/record-ip.js
 import { kv } from '@vercel/kv';
 
 export default async function handler(request, response) {
-  // 允许跨域访问（因为你的前端和 API 同域，其实可以不设置，但为了保险可以加上）
   response.setHeader('Access-Control-Allow-Origin', '*');
 
-  // 获取访客 IP（Vercel 会在请求头中传递真实 IP）
   const ip = request.headers['x-forwarded-for'] 
              || request.headers['x-real-ip'] 
              || request.socket.remoteAddress;
 
-  // 获取 User-Agent（可选）
   const userAgent = request.headers['user-agent'] || 'unknown';
 
-  // 记录时间
-  const timestamp = new Date().toISOString();
+  // 生成北京时间
+  const beijingTime = new Date().toLocaleString('zh-CN', { 
+    timeZone: 'Asia/Shanghai',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false 
+  }).replace(/\//g, '-'); // 转换为 2025-03-08 20:30:45 格式
 
   try {
-    // 将 IP 存入 KV 列表（使用 LPUSH，最新记录在列表头部）
     await kv.lpush('visitors', JSON.stringify({
       ip,
       userAgent,
-      timestamp
+      timestamp: beijingTime
     }));
 
-    // 可选：限制列表长度，避免无限增长（例如只保留最近 1000 条）
     await kv.ltrim('visitors', 0, 999);
 
     response.status(200).json({ success: true, message: 'IP recorded' });
